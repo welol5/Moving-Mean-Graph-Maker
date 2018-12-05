@@ -22,7 +22,7 @@ public class GraphManager {
 	 * @param x : The values that will be used for the x axis.
 	 * @param y : The values that will be used for the y axis.
 	 */
-	public GraphManager(File data, int x, int y)  throws FileNotFoundException{
+	public GraphManager(Graph parent, File data, int x, int y)  throws FileNotFoundException{
 		
 		//make a pass over the file to put the values in x and y into arrays for easier access.
 		Scanner in = new Scanner(data);

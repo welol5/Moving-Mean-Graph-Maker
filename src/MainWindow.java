@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 
 import javax.swing.JFrame;
@@ -22,9 +24,12 @@ public class MainWindow extends JFrame{
 	 */
 	public MainWindow(File data, int x, int y) {
 		//window setup
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		contentPane = new JPanel(new BorderLayout());
 		this.setContentPane(contentPane);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setSize(new Dimension(screen.width/2,screen.height/2));
+		this.setTitle(data.getName());
 		
 		//create a new Graph to display
 		Graph graph = new Graph(data,x,y);
