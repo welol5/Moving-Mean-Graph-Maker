@@ -35,12 +35,8 @@ public class MainWindow extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//this is the entry point for the application
-
-		primaryStage.setTitle(data.getName());
-	}
-
-	public static void main(String[] args) {
-
+		
+		Parameters args = getParameters();
 		File data = null;
 		int x = -1,y = -1;
 
@@ -57,6 +53,11 @@ public class MainWindow extends Application{
 				y = Integer.parseInt(args[i+1]);
 			}
 		}
+
+		primaryStage.setTitle(data.getName());
+	}
+
+	public static void main(String[] args) {
 
 		if(data != null && x != -1 && y != -1) {
 			MainWindow window = new MainWindow(data,x,y);
