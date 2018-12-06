@@ -22,7 +22,7 @@ public class GraphManager {
 	 * @param x : The values that will be used for the x axis.
 	 * @param y : The values that will be used for the y axis.
 	 */
-	public GraphManager(Graph parent, File data, int x, int y)  throws FileNotFoundException{
+	public GraphManager(Graph parent, File data, int xa, int ya)  throws FileNotFoundException{
 		
 		//make a pass over the file to put the values in x and y into arrays for easier access.
 		Scanner in = new Scanner(data);
@@ -42,11 +42,29 @@ public class GraphManager {
 		//populate the arrays
 		for(int i = 0; i < dataPointCount; i++) {
 			String[] line = lines.get(i).split(" ");
-			this.x[i] = Integer.parseInt(line[x]);
-			this.y[i] = Integer.parseInt(line[y]);
+			x[i] = Integer.parseInt(line[xa]);
+			y[i] = Integer.parseInt(line[ya]);
 		}
 		
 		//data is loaded into the program
 		System.out.println("Data loaded");
+		
+		//find the maximum x and y values
+		int xMax = -1;
+		int yMax = -1;
+		for(int i = 0; i < dataPointCount; i++) {
+			if(xMax < x[i]) {
+				xMax = x[i];
+			}
+			if(yMax < y[i]) {
+				yMax = y[i];
+			}
+		}
+		
+		//set the x and y max values
+		parent.setXMax(xMax);
+		parent.setYMax(yMax);
+		
+		
 	}
 }

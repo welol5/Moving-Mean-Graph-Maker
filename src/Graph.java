@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 public class Graph extends JPanel{
 	
 	GraphManager manager;
+	int yMax;
+	int xMax;
 	
 	public Graph(File data, int x, int y) {
 		try {
@@ -19,6 +21,14 @@ public class Graph extends JPanel{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void setXMax(int newX) {
+		xMax = newX;
+	}
+	
+	public void setYMax(int newY) {
+		yMax = newY;
 	}
 	
 }
