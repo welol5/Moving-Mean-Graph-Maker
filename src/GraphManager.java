@@ -65,6 +65,5 @@ public class GraphManager {
 		parent.setXMax(xMax);
 		parent.setYMax(yMax);
 		
-		
 	}
 }

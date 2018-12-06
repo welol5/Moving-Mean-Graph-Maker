@@ -33,7 +33,8 @@ public class MainWindow extends JFrame{
 		
 		//create a new Graph to display
 		Graph graph = new Graph(data,x,y);
-		contentPane.add(graph);
+		contentPane.add(graph, BorderLayout.CENTER);
+		System.out.println(graph.getHeight());
 	}
 	
 	
