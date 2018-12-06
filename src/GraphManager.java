@@ -14,6 +14,9 @@ public class GraphManager {
 	private int[] x;
 	private int[] y;
 	
+	private int yMax = -1;
+	private int xMax = -1;
+	
 	private int dataPointCount;
 	
 	/**
@@ -50,8 +53,6 @@ public class GraphManager {
 		System.out.println("Data loaded");
 		
 		//find the maximum x and y values
-		int xMax = -1;
-		int yMax = -1;
 		for(int i = 0; i < dataPointCount; i++) {
 			if(xMax < x[i]) {
 				xMax = x[i];
@@ -60,5 +61,20 @@ public class GraphManager {
 				yMax = y[i];
 			}
 		}
+	}
+	
+	/////////////////////////////
+	//auto generated
+
+	public int getyMax() {
+		return yMax;
+	}
+
+	public int getxMax() {
+		return xMax;
+	}
+
+	public int getDataPointCount() {
+		return dataPointCount;
 	}
 }

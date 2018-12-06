@@ -11,7 +11,10 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -22,9 +25,10 @@ import javafx.stage.Stage;
  */
 public class MainWindow extends Application{
 
-	private File data;
-	private int x, y;
-
+	Dimension screen;
+	int xMax = 0;
+	int yMax = 0;
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//this is the entry point for the application
@@ -32,19 +36,30 @@ public class MainWindow extends Application{
 		primaryStage.show();
 		
 		//make a scene
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		Group root = new Group();
+		screen = Toolkit.getDefaultToolkit().getScreenSize();
+		BorderPane root = new BorderPane();
 		Canvas canvas = new Canvas(screen.width/2,screen.height/2);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
+		
+		
+		
 		fillGraph(gc);
-		root.getChildren().add(canvas);
+		root.setCenter(canvas);
+		
+		GridPane text = new GridPane();
+		Text max = new Text("" + yMax);
+		text.add(max, 0, 0);
+		root.setLeft(text);
+		
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}
 	
 	public void fillGraph(GraphicsContext gc) {
-		gc.setFill(Color.BLUEVIOLET);
-		gc.fillText("Hello", 50, 50);
+		int textStartX = screen.width/10;
+		int textHeight = screen.height/20;
+		
+		
 	}
 
 	public static void main(String[] args) {
