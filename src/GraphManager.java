@@ -24,6 +24,7 @@ public class GraphManager {
 	 * @param data : The file that has the data. The data for this version should have values separated by spaces.
 	 * @param x : The values that will be used for the x axis.
 	 * @param y : The values that will be used for the y axis.
+	 * @param height : the max height in pixels of the graph.
 	 */
 	public GraphManager(File data, int xa, int ya, int height)  throws FileNotFoundException{
 		

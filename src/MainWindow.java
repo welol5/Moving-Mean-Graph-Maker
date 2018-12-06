@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -41,7 +42,17 @@ public class MainWindow extends Application{
 		Canvas canvas = new Canvas(screen.width/2,screen.height/2);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
+		//get a file
+		JFileChooser chooser = new JFileChooser();
+		File data = null;
+		if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			data = chooser.getSelectedFile();
+		} else {
+			System.exit(0);
+		}
 		
+		//pass the file to the graph manager
+		GraphManager manager = new GraphManager(data, 0, 1, screen.height/2);
 		
 		fillGraph(gc);
 		root.setCenter(canvas);
