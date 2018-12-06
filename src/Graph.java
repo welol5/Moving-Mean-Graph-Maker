@@ -16,7 +16,7 @@ public class Graph extends JPanel{
 	
 	public Graph(File data, int x, int y) {
 		try {
-			manager = new GraphManager(this,data,x,y);
+			manager = new GraphManager(this,data,x,y, (int)this.getSize().getHeight());
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
