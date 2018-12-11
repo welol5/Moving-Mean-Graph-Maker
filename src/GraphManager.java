@@ -62,6 +62,7 @@ public class GraphManager {
 				yMax = y[i];
 			}
 		}
+		System.out.println("Max values found");
 	}
 	
 	/////////////////////////////

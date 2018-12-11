@@ -39,38 +39,28 @@ public class MainWindow extends Application{
 		//make a scene
 		screen = Toolkit.getDefaultToolkit().getScreenSize();
 		BorderPane root = new BorderPane();
+		//add the root pane to the application
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+		
+		//add a canvas for drawing the graph
 		Canvas canvas = new Canvas(screen.width/2,screen.height/2);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		
-		//get a file
-		JFileChooser chooser = new JFileChooser();
-		File data = null;
-		if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			data = chooser.getSelectedFile();
-		} else {
-			System.exit(0);
-		}
-		
-		//pass the file to the graph manager
-		GraphManager manager = new GraphManager(data, 0, 1, screen.height/2);
-		
-		fillGraph(gc);
 		root.setCenter(canvas);
+		
+		//tell the user the program is loading
+
+		Text loading = new Text();
 		
 		GridPane text = new GridPane();
 		Text max = new Text("" + yMax);
-		text.add(max, 0, 0);
+		text.add(max, 100, 0);
 		root.setLeft(text);
-		
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
 	}
 	
 	public void fillGraph(GraphicsContext gc) {
-		int textStartX = screen.width/10;
+		int textStartX = screen.width/5;
 		int textHeight = screen.height/20;
-		
-		
 	}
 
 	public static void main(String[] args) {
