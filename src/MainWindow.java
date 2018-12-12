@@ -8,6 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -21,6 +24,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -31,9 +35,10 @@ import javafx.stage.Stage;
  */
 public class MainWindow extends Application{
 
-	Dimension screen;
-	int xMax = 0;
-	int yMax = 0;
+	private Dimension screen; //size of the screen
+	
+	private File dataFile; //the data file that will have a function run on it
+	private GridPane details = new GridPane(); //this will hold data that is discovered about the file
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -47,40 +52,65 @@ public class MainWindow extends Application{
 		
 		//make a colorful canvas for testing
 		Canvas canvas = new Canvas(screen.getWidth()/2,screen.getHeight()/2);
-		//System.out.println(canvas.getHeight());
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.setFill(Color.BLUE);
-		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		//set the background color
+		canvas.getStyleClass().add("graphPanel");
+		
 		//add canvas to the root panel
 		root.setCenter(canvas);
 		
 		//add the info pane to the root
 		//System.out.println(screen.getHeight());
-		root.setRight(makeInfoPanel(screen.getHeight()/2.0));
+		root.setRight(makeInfoPanel(screen.getHeight()/2.0, primaryStage));
 		
 		//add the root pane to the application
-		primaryStage.setScene(new Scene(root));
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add("Style.css");
+		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 	
-	private VBox makeInfoPanel(double height) {
+	private VBox makeInfoPanel(double height, Stage s) {
 		VBox holder = new VBox();
 		
 		//upper half (data details)
-		VBox details = new VBox();
 		details.setPrefHeight(height/2);
-		details.setStyle("-fx-background-color: #666666;-fx-border-color: #000000;-fx-border-thickness: 10;");
+		details.getStyleClass().add("basicPanel");
 		
-		//finish uppper half
+		//add items to display details about the upper half of the info panel
+		//file info
+		Text fileTitleLabel = new Text("File: ");
+		fileTitleLabel.getStyleClass().add("subtitleFont");
+		details.add(fileTitleLabel, 0, 0);
+		Text fileTitle = new Text("No File Selected");
+		fileTitle.getStyleClass().add("basicFont");
+		details.add(fileTitle, 1, 0);
+		
+		//finish upper half
 		holder.getChildren().add(details);
 		
 		//lower half (select file button)
 		VBox data = new VBox();
+		data.getStyleClass().add("basicPanel");
 		data.setPrefHeight(height/2);
 		data.setAlignment(Pos.BOTTOM_CENTER);
 		
+		//make the file select button
 		Button dataButton = new Button("Select File");
+		dataButton.getStyleClass().add("basicFont");
+		dataButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+				dataFile = fileChooser.showOpenDialog(s);
+				if(dataFile != null) {
+					fileTitle.setText(dataFile.getName());
+				}
+			}
+		});
 		
+		//add the button to the bottom half of the panel
 		data.getChildren().add(dataButton);
 		
 		//finish lower half

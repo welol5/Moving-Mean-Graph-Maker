@@ -1,3 +1,15 @@
 .basicPanel{
-	-fx-background-color: #333333;
+	-fx-background-color: #CCCCCC;
+}
+
+.graphPanel{
+	-fx-background-color: #DDDDDD;
+}
+
+.subtitleFont{
+	-fx-font: normal 16pt 'sans-serif';
+}
+
+.basicFont{
+	-fx-font: normal 12pt 'sans-serif';
 }
