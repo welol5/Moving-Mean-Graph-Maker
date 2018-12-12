@@ -1,3 +1,4 @@
+package Core;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,7 +7,14 @@ import java.util.Scanner;
 
 import javafx.scene.paint.Color;
 
-public abstract class GraphStyle {
+/**
+ * The GraphStyle abstract class deals with parsing data into arrays to make data processing easier. It also sets up a 2D array to be used for color
+ * values. The array will be the plot drawn in the program. The data processing should occur in the run method so that the program can make use
+ * of possible distributed processing. Any subclasses should super() variables. 
+ * @author William
+ *
+ */
+public abstract class GraphStyle implements Runnable{
 
 	private File data;
 	private Color[][] graph;
@@ -54,8 +62,6 @@ public abstract class GraphStyle {
 				graph[x][y] = Color.WHITE;
 			}
 		}
-		
-		//dataProcessing can now occur
 	}
 
 	//getters
