@@ -69,7 +69,7 @@ public class MainWindow extends Application{
 		//upper half (data details)
 		VBox details = new VBox();
 		details.setPrefHeight(height/2);
-		details.setStyle("-fx-background-color: #666666;-fx-border-color: #000000;-fx-border-thickness: 5;");
+		details.setStyle("-fx-background-color: #666666;-fx-border-color: #000000;-fx-border-thickness: 10;");
 		
 		//finish uppper half
 		holder.getChildren().add(details);
