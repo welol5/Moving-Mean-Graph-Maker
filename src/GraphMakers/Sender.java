@@ -7,15 +7,26 @@ import java.io.PrintWriter;
 public class Sender implements Runnable {
 	
 	private PrintWriter out;
+	private int[] values;
+	private int job;
 	
-	public Sender(OutputStream stream) {
+	public Sender(OutputStream stream, int jobNumber, int[] valuesToSend) {
 		out = new PrintWriter(new OutputStreamWriter(stream));
+		job = jobNumber;
+		values = valuesToSend;
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-
+		//make the string to send
+		String output = "" + job;
+		
+		for(int i = 0; i < values.length; i++) {
+			output += " " + values[i];
+		}
+		
+		out.println(output);
+		out.flush();
 	}
 
 }
