@@ -39,6 +39,10 @@ import javafx.stage.Stage;
 public class MainWindow extends Application{
 
 	private Dimension screen; //size of the screen
+	public static final String[] GRAPH_STYLES = {
+			"Distributed Moving Mean",
+			"Test"
+	};
 	
 	private File dataFile; //the data file that will have a function run on it
 	private GridPane details = new GridPane(); //this will hold data that is discovered about the file
@@ -50,6 +54,7 @@ public class MainWindow extends Application{
 		//this is the entry point for the application
 		primaryStage.setTitle("Moving Mean Graph Maker");
 		primaryStage.show();
+		primaryStage.setResizable(false);
 		
 		//make a scene
 		screen = Toolkit.getDefaultToolkit().getScreenSize();

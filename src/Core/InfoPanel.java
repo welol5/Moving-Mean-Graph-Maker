@@ -2,8 +2,11 @@ package Core;
 
 import java.io.File;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -16,6 +19,7 @@ import javafx.stage.Stage;
 public class InfoPanel extends VBox {
 
 	private File dataFile;
+	private ComboBox<String> styleSelect;
 
 	public InfoPanel(Stage stage, double prefHeight) {
 		super();
@@ -34,19 +38,22 @@ public class InfoPanel extends VBox {
 		Text fileTitle = new Text("No File Selected");
 		fileTitle.getStyleClass().add("basicFont");
 		details.add(fileTitle, 1, 0);
-		
+
 		//add details to this
 		getChildren().add(details);
-		
+
 		//File IO and other user input
 		GridPane filePane = new GridPane();
 		filePane.setPrefHeight(this.getPrefHeight()/2);
 		filePane.getStyleClass().add("basicPanel");
 		filePane.setAlignment(Pos.BOTTOM_CENTER);
-		
+		filePane.setVgap(prefHeight/100);
+		//filePane.setPadding();
+
 		//add select file button
 		Button selectFileButton = new Button("Select File");
 		selectFileButton.getStyleClass().add("basicFont");
+		//selectFileButton.setAlignment(Pos.CENTER);
 		selectFileButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -58,14 +65,42 @@ public class InfoPanel extends VBox {
 				}
 			}
 		});
-		filePane.getChildren().add(selectFileButton);
-		
+		filePane.add(selectFileButton,0,2);
+
+		//add distributed computer select
+		Button workerSelecter = new Button("Edit Worker List");
+		workerSelecter.getStyleClass().add("basicFont");
+		workerSelecter.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+
+			}
+		});
+		filePane.add(workerSelecter, 0, 1);
+
 		//add GraphStyle select
-		ComboBox styleSelect = new ComboBox();
-		
+		styleSelect = new ComboBox<String>();
+		styleSelect.setPromptText("Select Graph Type");
+		styleSelect.getStyleClass().add("basicFont");
+		for(int i = 0; i < MainWindow.GRAPH_STYLES.length; i++) {
+			styleSelect.getItems().add(MainWindow.GRAPH_STYLES[i]);
+		}
+		styleSelect.valueProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if(newValue.startsWith("Distributed")) {
+					workerSelecter.setDisable(false);
+				} else {
+					workerSelecter.setDisable(true);
+				}
+			}
+		});
+		filePane.add(styleSelect,0,0);
+
 		//add the user input to this
 		this.getChildren().add(filePane);
-		
+
 	}
 
 	public File getDataFile() {
