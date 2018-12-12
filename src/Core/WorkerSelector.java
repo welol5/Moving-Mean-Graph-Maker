@@ -18,6 +18,8 @@ public class WorkerSelector {
 		Stage window = new Stage();
 		window.setResizable(false);
 		
+		//window is a separate window to be used for getting data
+		
 		//make the window a priority
 		window.initModality(Modality.APPLICATION_MODAL);
 		
@@ -26,10 +28,8 @@ public class WorkerSelector {
 		window.setWidth(screen.getWidth()/4);
 		window.setHeight(screen.getHeight()/2);
 		
-		//make a root panel to put everthing into
+		//make a root panel to put everything into
 		VBox root = new VBox();
-		
-		//window is a separate window to be used for getting data
 		
 		//data structure that will hold and show worker connection data
 		WorkerData data = new WorkerData();
