@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -30,11 +31,21 @@ public class WorkerSelector {
 		
 		//window is a separate window to be used for getting data
 		
+		//data structure that will hold and show worker connection data
+		WorkerData data = new WorkerData();
+		
 		//add text to let the user know what to do
 		Text instructions = new Text("Enter the IP address and port seperated by a \":\".");
 		root.getChildren().add(instructions);
+		//let the user enter info for a worker
+		TextField workerInfo = new TextField();
+		workerInfo.setOnAction(e -> {
+			data.addWorker(workerInfo.getText());
+		});
+		root.getChildren().add(workerInfo);
 		
-		
+		//show listed workers
+		root.getChildren().add(data);
 		
 		//add a confirmation button
 		Button confirmButton = new Button("confirm");
