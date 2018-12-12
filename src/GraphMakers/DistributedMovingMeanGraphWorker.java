@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class DistributedMovingMeanGraphWorkerServer {
+public class DistributedMovingMeanGraphWorker {
 
 	private static ArrayBlockingQueue<Socket> connections;
 	public static final int DEFAULT_PORT = 40998;
