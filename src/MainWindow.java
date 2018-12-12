@@ -17,6 +17,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -39,6 +41,8 @@ public class MainWindow extends Application{
 	
 	private File dataFile; //the data file that will have a function run on it
 	private GridPane details = new GridPane(); //this will hold data that is discovered about the file
+	
+	//GraphManager manager = new GraphManager();
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
