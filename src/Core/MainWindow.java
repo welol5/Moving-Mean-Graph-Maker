@@ -66,62 +66,14 @@ public class MainWindow extends Application{
 		
 		//add the info pane to the root
 		//System.out.println(screen.getHeight());
-		root.setRight(makeInfoPanel(screen.getHeight()/2.0, primaryStage));
+		InfoPanel info = new InfoPanel(primaryStage, screen.getHeight()/2);
+		root.setRight(info);
 		
 		//add the root pane to the application
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add("Style.css");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-	}
-	
-	private VBox makeInfoPanel(double height, Stage s) {
-		VBox holder = new VBox();
-		
-		//upper half (data details)
-		details.setPrefHeight(height/2);
-		details.getStyleClass().add("basicPanel");
-		
-		//add items to display details about the upper half of the info panel
-		//file info
-		Text fileTitleLabel = new Text("File: ");
-		fileTitleLabel.getStyleClass().add("subtitleFont");
-		details.add(fileTitleLabel, 0, 0);
-		Text fileTitle = new Text("No File Selected");
-		fileTitle.getStyleClass().add("basicFont");
-		details.add(fileTitle, 1, 0);
-		
-		//finish upper half
-		holder.getChildren().add(details);
-		
-		//lower half (select file button)
-		VBox data = new VBox();
-		data.getStyleClass().add("basicPanel");
-		data.setPrefHeight(height/2);
-		data.setAlignment(Pos.BOTTOM_CENTER);
-		
-		//make the file select button
-		Button dataButton = new Button("Select File");
-		dataButton.getStyleClass().add("basicFont");
-		dataButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				FileChooser fileChooser = new FileChooser();
-				fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-				dataFile = fileChooser.showOpenDialog(s);
-				if(dataFile != null) {
-					fileTitle.setText(dataFile.getName());
-				}
-			}
-		});
-		
-		//add the button to the bottom half of the panel
-		data.getChildren().add(dataButton);
-		
-		//finish lower half
-		holder.getChildren().add(data);
-		
-		return holder;
 	}
 
 	public static void main(String[] args) {
