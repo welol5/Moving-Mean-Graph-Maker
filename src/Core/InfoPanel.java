@@ -68,15 +68,13 @@ public class InfoPanel extends VBox {
 		filePane.add(selectFileButton,0,2);
 
 		//add distributed computer select
-		Button workerSelecter = new Button("Edit Worker List");
-		workerSelecter.getStyleClass().add("basicFont");
-		workerSelecter.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-
-			}
+		Button workerSelector = new Button("Edit Worker List");
+		workerSelector.getStyleClass().add("basicFont");
+		workerSelector.setOnAction(e -> {
+			WorkerSelector selector = new WorkerSelector();
+			selector.display();
 		});
-		filePane.add(workerSelecter, 0, 1);
+		filePane.add(workerSelector, 0, 1);
 
 		//add GraphStyle select
 		styleSelect = new ComboBox<String>();
@@ -90,9 +88,9 @@ public class InfoPanel extends VBox {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if(newValue.startsWith("Distributed")) {
-					workerSelecter.setDisable(false);
+					workerSelector.setDisable(false);
 				} else {
-					workerSelecter.setDisable(true);
+					workerSelector.setDisable(true);
 				}
 			}
 		});
