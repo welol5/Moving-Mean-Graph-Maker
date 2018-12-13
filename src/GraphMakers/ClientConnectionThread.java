@@ -1,17 +1,21 @@
 package GraphMakers;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.Socket;
 
-public class Sender implements Runnable {
+public class ClientConnectionThread implements Runnable {
 	
+	private Socket socket;
 	private PrintWriter out;
 	private int[] values;
 	private int job;
 	
-	public Sender(OutputStream stream, int jobNumber, int[] valuesToSend) {
-		out = new PrintWriter(new OutputStreamWriter(stream));
+	public ClientConnectionThread(Socket connection, int jobNumber, int[] valuesToSend) throws IOException{
+		socket = connection;
+		out = new PrintWriter(new OutputStreamWriter(connection.getOutputStream()));
 		job = jobNumber;
 		values = valuesToSend;
 	}
@@ -27,6 +31,8 @@ public class Sender implements Runnable {
 		
 		out.println(output);
 		out.flush();
+		
+		
 	}
 
 }
