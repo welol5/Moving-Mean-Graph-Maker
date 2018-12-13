@@ -112,7 +112,7 @@ public class InfoPanel extends VBox {
 			//make the correct type of graph
 			if(graphType.equalsIgnoreCase("Distributed Moving Mean")) {
 				System.out.println("Make Graph");
-				graph = new DistributedMovingMeanGraphSupervisor(dataFile, " ", 0,1,graphDimension, workerData);
+				graph = new DistributedMovingMeanGraphSupervisor(dataFile, " ", 0,1, /*TODO range*/10,graphDimension, workerData);
 				graphThread = new Thread(graph);
 				graphThread.start();
 			}

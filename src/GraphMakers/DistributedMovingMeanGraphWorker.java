@@ -10,6 +10,7 @@ public class DistributedMovingMeanGraphWorker implements Runnable {
 
 	@Override
 	public void run() {
+		//TODO do the required calculations with the values
 		
 	}
 

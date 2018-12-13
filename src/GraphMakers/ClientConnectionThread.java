@@ -15,11 +15,13 @@ public class ClientConnectionThread implements Runnable {
 	private Socket socket;
 	private double[] values;
 	private int job;
+	private int range;
 	
-	public ClientConnectionThread(Socket connection, int jobNumber, double[] valuesToSend){
+	public ClientConnectionThread(Socket connection, int jobNumber, double[] valuesToSend, int range){
 		socket = connection;
 		job = jobNumber;
 		values = valuesToSend;
+		this.range = range;
 	}
 
 	@Override
@@ -42,6 +44,15 @@ public class ClientConnectionThread implements Runnable {
 		}
 		
 		System.out.println("Connection made");
+		
+		//objects are ready to send and receive
+		try {
+			out.writeObject(values);
+			out.write(range);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
