@@ -19,8 +19,8 @@ public abstract class GraphStyle implements Runnable{
 	private File data;
 	private Color[][] graph;
 
-	private int[] xValues;
-	private int[] yValues;
+	private double[] xValues;
+	private double[] yValues;
 
 	public GraphStyle(File file, String regex, int xCol, int yCol, Dimension s) throws IllegalArgumentException{
 		if(file.isFile()) {
@@ -46,11 +46,11 @@ public abstract class GraphStyle implements Runnable{
 		}
 		fileInput.close();
 		//convert ArrayLists into arrays for easier handling
-		xValues = new int[xStrings.size()];
-		yValues = new int[yStrings.size()];
+		xValues = new double[xStrings.size()];
+		yValues = new double[yStrings.size()];
 		for(int i = 0; i < xValues.length && i < yValues.length; i++) {
-			xValues[i] = Integer.parseInt(xStrings.get(i));
-			yValues[i] = Integer.parseInt(yStrings.get(i));
+			xValues[i] = Double.parseDouble(xStrings.get(i));
+			yValues[i] = Double.parseDouble(yStrings.get(i));
 		}
 		//Values are now loaded into the program
 
@@ -73,11 +73,11 @@ public abstract class GraphStyle implements Runnable{
 		return graph;
 	}
 
-	protected int[] getxValues() {
+	protected double[] getxValues() {
 		return xValues;
 	}
 
-	protected int[] getyValues() {
+	protected double[] getyValues() {
 		return yValues;
 	}
 	
