@@ -62,13 +62,37 @@ public class ClientConnectionThread implements Runnable {
 			out.writeInt(height);
 			out.flush();
 			out.writeDouble(maxYVal);
+			out.flush();
+			System.out.println("Sent all values");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		//receive results
+		boolean[][] graphSegment = null;
+		try {
+			graphSegment = (boolean[][]) in.readObject();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		//debug
+		if(graphSegment == null) {
+			System.out.println("Segment not received");
+		} else {
+			for(int x = 0; x < graphSegment.length; x++) {
+				System.out.print("[");
+				for(int y = 0; y < graphSegment[x].length; y++){
+					System.out.print(" " + graphSegment[x][y]);
+				}
+				System.out.println("]");
+			}
+		}
 	}
 
 }

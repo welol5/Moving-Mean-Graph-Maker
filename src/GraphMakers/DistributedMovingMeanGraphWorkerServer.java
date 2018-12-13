@@ -81,9 +81,13 @@ public class DistributedMovingMeanGraphWorkerServer {
 					allYValues = (double[]) in.readObject();
 					//x values correspond to what column of pixels the y values map to
 					allXValues = (int[]) in.readObject();
+					System.out.println("Read arrays");
 					range = in.readInt();
+					System.out.println("Read range");
 					height = in.readInt();
+					System.out.println("Read height");
 					maxYVal = in.readDouble();
+					System.out.println("Read all values");
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -105,6 +109,26 @@ public class DistributedMovingMeanGraphWorkerServer {
 					workers[i] = new DistributedMovingMeanGraphWorker(xValues, yValues, height, maxYVal);
 					workerThreads[i] = new Thread(workers[i]);
 					workerThreads[i].start();
+				}
+				
+				//wait for threads to complete
+				for(int i = 0; i < THREADS; i++) {
+					try {
+						workerThreads[i].join();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				//send back values calculated
+				try {
+					out.writeObject(graph);
+					out.flush();
+					System.out.println("Calculations complete and data sent.");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
