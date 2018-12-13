@@ -14,6 +14,7 @@ public class DistributedMovingMeanGraphWorkerServer {
 	private static volatile boolean shutdown = false;
 	
 	public static final int THREADS = 4;
+	private static boolean[][] graph;
 
 	public static void main(String[] args) {
 
@@ -71,11 +72,16 @@ public class DistributedMovingMeanGraphWorkerServer {
 				
 				//objects are ready to send and receive
 				//get the arrays of values
-				double[] allValues = null;
+				double[] allYValues = null;
+				int[] allXValues = null;
 				int range = 0;
+				int height = -1;
 				try {
-					allValues = (double[]) in.readObject();
+					allYValues = (double[]) in.readObject();
+					//x values correspond to what column of pixels the y values map to
+					allXValues = (int[]) in.readObject();
 					range = in.readInt();
+					height = in.readInt();
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -84,13 +90,17 @@ public class DistributedMovingMeanGraphWorkerServer {
 					e.printStackTrace();
 				}
 				
+				//setup graph segment
+				graph = new boolean[allXValues[allXValues.length-1]][height];
+				
 				System.out.println("Values received");
 				//distribute values to the workers
 				Thread[] workerThreads = new Thread[THREADS];
 				DistributedMovingMeanGraphWorker[] workers = new DistributedMovingMeanGraphWorker[THREADS];
 				for(int i = 0; i < THREADS; i++) {
-					double[] values = Arrays.copyOfRange(allValues, i*(THREADS/allValues.length), (i*(THREADS/allValues.length))+range);
-					workers[i] = new DistributedMovingMeanGraphWorker(values);
+					double[] yValues = Arrays.copyOfRange(allYValues, i*(THREADS/allYValues.length), (i*(THREADS/allYValues.length))+range);
+					int[] xValues = Arrays.copyOfRange(allXValues, i*(THREADS/allXValues.length), (i*(THREADS/allXValues.length))+range);
+					workers[i] = new DistributedMovingMeanGraphWorker(xValues, yValues, height);
 					workerThreads[i] = new Thread(workers[i]);
 					workerThreads[i].start();
 				}
@@ -109,5 +119,9 @@ public class DistributedMovingMeanGraphWorkerServer {
 		shutdown = true;
 	}
 
-	
+	public static void setGraphPos(int x, int y) {
+		synchronized(graph) {
+			graph[x][y] = true;
+		}
+	}
 }

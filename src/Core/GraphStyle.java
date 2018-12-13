@@ -21,8 +21,13 @@ public abstract class GraphStyle implements Runnable{
 
 	private double[] xValues;
 	private double[] yValues;
+	
+	private Dimension size;
 
 	public GraphStyle(File file, String regex, int xCol, int yCol, Dimension s) throws IllegalArgumentException{
+		
+		size = s;
+		
 		if(file.isFile()) {
 			data = file;
 		} else {
@@ -63,6 +68,10 @@ public abstract class GraphStyle implements Runnable{
 			}
 		}
 		System.out.println("Loaded");
+	}
+
+	protected Dimension getSize() {
+		return size;
 	}
 
 	//getters

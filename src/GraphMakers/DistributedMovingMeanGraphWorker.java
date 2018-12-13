@@ -2,16 +2,30 @@ package GraphMakers;
 
 public class DistributedMovingMeanGraphWorker implements Runnable {
 	
-	private double[] values;
+	private double[] yValues;
+	private int[] xValues;
+	private double maxYVal;
+	private int height;
 	
-	public DistributedMovingMeanGraphWorker(double[] values) {
-		this.values = values;
+	public DistributedMovingMeanGraphWorker(int[] xValues, double[] yValues, int height, double maxYVal) {
+		this.xValues = xValues;
+		this.yValues = yValues;
+		this.maxYVal= maxYVal;
+		this.height = height;
 	}
 
 	@Override
 	public void run() {
-		//TODO do the required calculations with the values
 		
+		for(int i = 0; i < xValues.length; i++) {
+			int y = (int)map(yValues[i], maxYVal, 0, height, 0);
+			DistributedMovingMeanGraphWorkerServer.setGraphPos(xValues[i], y);
+		}
+		
+	}
+	
+	private double map(double value, double oldHigh, double oldLow, double newHigh, double newLow) {
+		return (((value-oldLow)/(oldHigh-oldLow))*(newHigh-newLow))+newLow;
 	}
 
 }

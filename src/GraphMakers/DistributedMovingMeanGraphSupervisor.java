@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Random;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
 import Core.GraphStyle;
 
 public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
@@ -35,14 +37,21 @@ public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
 			}
 		}
 		
+		//calculate the values that the y values will be mapped to
+		int[] yMap = new int[getxValues().length];
+		for(int i = 0; i < yMap.length; i++) {
+			yMap[i] = i/getSize().width;
+		}
+		
 		//make connections to handle data
 		System.out.println("Make connections");
 		Thread[] handlerThreads = new Thread[workers.length];
 		ClientConnectionThread[] handlers = new ClientConnectionThread[workers.length];
 		for(int i = 0; i < workers.length; i++) {
-			System.out.println((i*(getyValues().length/workers.length)) + " : " + ((i+1)*(getyValues().length/workers.length)-1));
+			//System.out.println((i*(getyValues().length/workers.length)) + " : " + ((i+1)*(getyValues().length/workers.length)-1));
 			double[] arrayToSend = Arrays.copyOfRange(getyValues(), i*(getyValues().length/workers.length), (i+1)*(getyValues().length/workers.length)-1);
-			handlers[i] = new ClientConnectionThread(workers[i],i,arrayToSend, range);
+			int[] yMapToSend = Arrays.copyOfRange(yMap, i*(yMap.length/workers.length), (i+1)*(yMap.length/workers.length));
+			handlers[i] = new ClientConnectionThread(workers[i],i,arrayToSend,yMapToSend, range, getSize().height);
 			handlerThreads[i] = new Thread(handlers[i]);
 			handlerThreads[i].start();
 			
