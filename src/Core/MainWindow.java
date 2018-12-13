@@ -46,6 +46,7 @@ public class MainWindow extends Application{
 	
 	private File dataFile; //the data file that will have a function run on it
 	private GridPane details = new GridPane(); //this will hold data that is discovered about the file
+	private Dimension graphSize;
 	
 	//GraphManager manager = new GraphManager();
 	
@@ -61,7 +62,8 @@ public class MainWindow extends Application{
 		BorderPane root = new BorderPane();
 		
 		//make a colorful canvas for testing
-		Canvas canvas = new Canvas(screen.getWidth()/2,screen.getHeight()/2);
+		graphSize = new Dimension((int)screen.getWidth()/2,(int)screen.getHeight()/2);
+		Canvas canvas = new Canvas(graphSize.getWidth(),graphSize.getHeight());
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		//set the background color
 		canvas.getStyleClass().add("graphPanel");
@@ -71,7 +73,7 @@ public class MainWindow extends Application{
 		
 		//add the info pane to the root
 		//System.out.println(screen.getHeight());
-		InfoPanel info = new InfoPanel(primaryStage, screen.getHeight()/2);
+		InfoPanel info = new InfoPanel(primaryStage, screen.getHeight()/2, graphSize);
 		root.setRight(info);
 		
 		//add the root pane to the application

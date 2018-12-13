@@ -42,6 +42,7 @@ public class DistributedMovingMeanGraphWorkerServer {
 		}
 		
 		//a server has been created and can start accepting connections
+		System.out.println("Server listening on: " + server.getLocalPort());
 		while(!shutdown) {
 			Socket connection = null;
 			try {

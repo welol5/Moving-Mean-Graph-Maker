@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 
 public class WorkerSelector {
 	
+	WorkerData data;
+	
 	public void display() {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		Stage window = new Stage();
@@ -32,7 +34,7 @@ public class WorkerSelector {
 		VBox root = new VBox();
 		
 		//data structure that will hold and show worker connection data
-		WorkerData data = new WorkerData();
+		data = new WorkerData();
 		
 		//add text to let the user know what to do
 		Text instructions = new Text("Enter the IP address and port seperated by a \":\".");
@@ -59,4 +61,7 @@ public class WorkerSelector {
 		window.showAndWait();
 	}
 	
+	public String[] getData() {
+		return data.getWorkers();
+	}
 }

@@ -62,6 +62,7 @@ public abstract class GraphStyle implements Runnable{
 				graph[x][y] = Color.WHITE;
 			}
 		}
+		System.out.println("Loaded");
 	}
 
 	//getters

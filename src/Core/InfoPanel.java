@@ -1,7 +1,9 @@
 package Core;
 
+import java.awt.Dimension;
 import java.io.File;
 
+import GraphMakers.DistributedMovingMeanGraphSupervisor;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -20,10 +22,14 @@ public class InfoPanel extends VBox {
 
 	private File dataFile;
 	private ComboBox<String> styleSelect;
+	private Dimension graphDimension;
+	private String[] workerData;
+	private Thread graphThread;
 
-	public InfoPanel(Stage stage, double prefHeight) {
+	public InfoPanel(Stage stage, double prefHeight, Dimension graphDim) {
 		super();
 		this.setPrefHeight(prefHeight);
+		graphDimension = graphDim;
 
 		//make the file details area
 		GridPane details = new GridPane();
@@ -73,6 +79,7 @@ public class InfoPanel extends VBox {
 		workerSelector.setOnAction(e -> {
 			WorkerSelector selector = new WorkerSelector();
 			selector.display();
+			workerData = selector.getData();
 		});
 		filePane.add(workerSelector, 0, 1);
 
@@ -99,8 +106,18 @@ public class InfoPanel extends VBox {
 		Button goButton = new Button("Go");
 		goButton.getStyleClass().add("basicFont");
 		goButton.setOnAction(e -> {
+			String graphType = styleSelect.getValue();
+			GraphStyle graph;
 			
+			//make the correct type of graph
+			if(graphType.equalsIgnoreCase("Distributed Moving Mean")) {
+				System.out.println("Make Graph");
+				graph = new DistributedMovingMeanGraphSupervisor(dataFile, " ", 0,1,graphDimension, workerData);
+				graphThread = new Thread(graph);
+				graphThread.start();
+			}
 		});
+		filePane.add(goButton, 0, 3);
 
 		//add the user input to this
 		this.getChildren().add(filePane);
