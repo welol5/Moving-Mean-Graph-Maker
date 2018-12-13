@@ -1,6 +1,10 @@
 package GraphMakers;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -9,29 +13,35 @@ import java.net.Socket;
 public class ClientConnectionThread implements Runnable {
 	
 	private Socket socket;
-	private PrintWriter out;
-	private int[] values;
+	private double[] values;
 	private int job;
 	
-	public ClientConnectionThread(Socket connection, int jobNumber, int[] valuesToSend) throws IOException{
+	public ClientConnectionThread(Socket connection, int jobNumber, double[] valuesToSend){
 		socket = connection;
-		out = new PrintWriter(new OutputStreamWriter(connection.getOutputStream()));
 		job = jobNumber;
 		values = valuesToSend;
 	}
 
 	@Override
 	public void run() {
-		//make the string to send
-		String output = "" + job;
 		
-		for(int i = 0; i < values.length; i++) {
-			output += " " + values[i];
+		//construct streams
+		ObjectOutputStream out = null;
+		ObjectInputStream in = null;
+		try {
+			//sleep the thread so the the worker has time to setup and wait for stream key
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {}
+			out = new ObjectOutputStream(socket.getOutputStream());
+			in = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
 		}
 		
-		out.println(output);
-		out.flush();
-		
+		System.out.println("Connection made");
 		
 	}
 

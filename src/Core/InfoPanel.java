@@ -95,6 +95,12 @@ public class InfoPanel extends VBox {
 			}
 		});
 		filePane.add(styleSelect,0,0);
+		
+		Button goButton = new Button("Go");
+		goButton.getStyleClass().add("basicFont");
+		goButton.setOnAction(e -> {
+			
+		});
 
 		//add the user input to this
 		this.getChildren().add(filePane);

@@ -1,6 +1,8 @@
 package GraphMakers;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -52,7 +54,17 @@ public class DistributedMovingMeanGraphWorkerServer {
 			if(connection != null) {
 				
 				//make worker objects here and have them do work
+				ObjectInputStream in;
+				ObjectOutputStream out;
+				try {
+					in = new ObjectInputStream(connection.getInputStream());
+					out = new ObjectOutputStream(connection.getOutputStream());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
+				System.out.println("Connection made");
 				
 			}
 		}

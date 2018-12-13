@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Random;
 
 import Core.GraphStyle;
@@ -32,9 +33,12 @@ public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
 			}
 		}
 		
-		//make senders and receivers to handle the data
+		//make connections to handle data
+		ClientConnectionThread[] handlers = new ClientConnectionThread[workers.length];
 		for(int i = 0; i < workers.length; i++) {
-			//TODO use senders and receivers to deal with data here
+			System.out.println((i*(getyValues().length/workers.length)) + " : " + ((i+1)*(getyValues().length/workers.length)-1));
+			double[] arrayToSend = Arrays.copyOfRange(getyValues(), i*(getyValues().length/workers.length), (i+1)*(getyValues().length/workers.length)-1);
+			handlers[i] = new ClientConnectionThread(workers[i],i,arrayToSend);
 		}
 	}
 }
