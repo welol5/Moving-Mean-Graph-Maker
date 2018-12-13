@@ -17,15 +17,17 @@ public class ClientConnectionThread implements Runnable {
 	private int job;
 	private int range;
 	private int[] yMap;
-	int height;
+	private int height;
+	private double maxYVal;
 	
-	public ClientConnectionThread(Socket connection, int jobNumber, double[] valuesToSend, int[] yMap, int range, int height){
+	public ClientConnectionThread(Socket connection, int jobNumber, double[] valuesToSend, int[] yMap, int range, int height, double MaxYVal){
 		socket = connection;
 		job = jobNumber;
 		values = valuesToSend;
 		this.range = range;
 		this.yMap = yMap;
 		this.height = height;
+		this.maxYVal = MaxYVal;
 	}
 
 	@Override
@@ -59,6 +61,7 @@ public class ClientConnectionThread implements Runnable {
 			out.flush();
 			out.writeInt(height);
 			out.flush();
+			out.writeDouble(maxYVal);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

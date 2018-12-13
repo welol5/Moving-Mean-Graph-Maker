@@ -21,7 +21,8 @@ public abstract class GraphStyle implements Runnable{
 
 	private double[] xValues;
 	private double[] yValues;
-	
+	private double maxYVal = 0;
+
 	private Dimension size;
 
 	public GraphStyle(File file, String regex, int xCol, int yCol, Dimension s) throws IllegalArgumentException{
@@ -55,7 +56,12 @@ public abstract class GraphStyle implements Runnable{
 		yValues = new double[yStrings.size()];
 		for(int i = 0; i < xValues.length && i < yValues.length; i++) {
 			xValues[i] = Double.parseDouble(xStrings.get(i));
-			yValues[i] = Double.parseDouble(yStrings.get(i));
+			double yVal = Double.parseDouble(yStrings.get(i));
+			yValues[i] = yVal;
+			if(yVal > maxYVal) {
+				maxYVal = yVal;
+			}
+			
 		}
 		//Values are now loaded into the program
 
@@ -89,6 +95,10 @@ public abstract class GraphStyle implements Runnable{
 
 	protected double[] getyValues() {
 		return yValues;
+	}
+	
+	protected double getMaxYVal() {
+		return maxYVal;
 	}
 	
 	//setters
