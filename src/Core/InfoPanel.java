@@ -25,6 +25,7 @@ public class InfoPanel extends VBox {
 	private Dimension graphDimension;
 	private String[] workerData;
 	private Thread graphThread;
+	private WorkerSelector selector = new WorkerSelector();
 
 	public InfoPanel(Stage stage, double prefHeight, Dimension graphDim) {
 		super();
@@ -77,7 +78,6 @@ public class InfoPanel extends VBox {
 		Button workerSelector = new Button("Edit Worker List");
 		workerSelector.getStyleClass().add("basicFont");
 		workerSelector.setOnAction(e -> {
-			WorkerSelector selector = new WorkerSelector();
 			selector.display();
 			workerData = selector.getData();
 		});

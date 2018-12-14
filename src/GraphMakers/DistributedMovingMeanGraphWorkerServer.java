@@ -100,12 +100,26 @@ public class DistributedMovingMeanGraphWorkerServer {
 				graph = new boolean[allXValues[allXValues.length-1]][height];
 				
 				System.out.println("Values received");
+				System.out.println("# of values: " + allYValues.length);
 				//distribute values to the workers
 				Thread[] workerThreads = new Thread[THREADS];
 				DistributedMovingMeanGraphWorker[] workers = new DistributedMovingMeanGraphWorker[THREADS];
 				for(int i = 0; i < THREADS; i++) {
-					double[] yValues = Arrays.copyOfRange(allYValues, i*(THREADS/allYValues.length), (i*(THREADS/allYValues.length))+range);
-					int[] xValues = Arrays.copyOfRange(allXValues, i*(THREADS/allXValues.length), (i*(THREADS/allXValues.length))+range);
+					int low = i*(allYValues.length/THREADS);
+					int high = ((i+1)*(allYValues.length/THREADS))+range;
+					//prevent out of bounds
+					if(high > allYValues.length) {
+						high = allYValues.length;
+					}
+					//debug
+					System.out.println("Low: " + low);
+					System.out.println("High: " + high);
+					
+					//get the subsets
+					double[] yValues = Arrays.copyOfRange(allYValues,low, high);
+					int[] xValues = Arrays.copyOfRange(allXValues,low, high);
+					
+					//give the workers the subsets
 					workers[i] = new DistributedMovingMeanGraphWorker(xValues, yValues, height, maxYVal);
 					workerThreads[i] = new Thread(workers[i]);
 					workerThreads[i].start();
