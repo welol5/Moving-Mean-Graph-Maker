@@ -19,7 +19,9 @@ public class DistributedMovingMeanGraphWorker implements Runnable {
 		
 		for(int i = 0; i < xValues.length; i++) {
 			int y = (int)map(yValues[i], maxYVal, 0, height, 0);
-			System.out.println("(" + yValues[i] + "," + y + ")");
+			System.out.println("(" + xValues[i] + "," + yValues[i] + "):(" + xValues[i] + "," + y + ")");
+//			System.out.println("Max: " + maxYVal);
+//			System.out.println("(" + yValues[i] + "," + y + ")");
 			DistributedMovingMeanGraphWorkerServer.setGraphPos(xValues[i], y);
 		}
 		

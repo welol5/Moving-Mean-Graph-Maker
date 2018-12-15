@@ -24,10 +24,14 @@ public abstract class GraphStyle implements Runnable{
 	private double maxYVal = 0;
 
 	private Dimension size;
+	private Color color;
+	
+	protected volatile boolean done = false;
 
-	public GraphStyle(File file, String regex, int xCol, int yCol, Dimension s) throws IllegalArgumentException{
+	public GraphStyle(File file, String regex, int xCol, int yCol, Dimension s, Color c) throws IllegalArgumentException{
 		
 		size = s;
+		color = c;
 		
 		if(file.isFile()) {
 			data = file;
@@ -73,7 +77,7 @@ public abstract class GraphStyle implements Runnable{
 				graph[x][y] = Color.WHITE;
 			}
 		}
-		System.out.println("Loaded");
+		//System.out.println("Loaded");
 	}
 
 	protected Dimension getSize() {
@@ -101,8 +105,20 @@ public abstract class GraphStyle implements Runnable{
 		return maxYVal;
 	}
 	
+	public boolean isDone() {
+		return done;
+	}
+	
+	public Color getGraphPoint(int x, int y) {
+		synchronized (graph) {
+			return graph[x][y];
+		}
+	}
+	
 	//setters
-	public void setGraphPoint(int x, int y, Color c) {
-		
+	protected void setGraphPoint(int x, int y) {
+		synchronized(graph) {
+			graph[x][y] = color;
+		}
 	}
 }

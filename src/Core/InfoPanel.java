@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -27,7 +28,7 @@ public class InfoPanel extends VBox {
 	private Thread graphThread;
 	private WorkerSelector selector = new WorkerSelector();
 
-	public InfoPanel(Stage stage, double prefHeight, Dimension graphDim) {
+	public InfoPanel(Stage stage, double prefHeight, Dimension graphDim, GraphPanel panel) {
 		super();
 		this.setPrefHeight(prefHeight);
 		graphDimension = graphDim;
@@ -111,17 +112,24 @@ public class InfoPanel extends VBox {
 			
 			//make the correct type of graph
 			if(graphType.equalsIgnoreCase("Distributed Moving Mean")) {
-				System.out.println("Make Graph");
-				graph = new DistributedMovingMeanGraphSupervisor(dataFile, " ", 0,1, /*TODO range*/10,graphDimension, workerData);
+				//System.out.println("Make Graph");
+				graph = new DistributedMovingMeanGraphSupervisor(dataFile, " ", 0,1, Color.BLUEVIOLET, /*TODO range*/10,graphDimension, workerData);
 				graphThread = new Thread(graph);
 				graphThread.start();
+				
+				panel.setLoadingScreen();
+				//wait for the data
+				//use a loop so that the program does not hang
+				while(!graph.isDone()) {}
+				
+				panel.paintGraph(graph.getGraph());
+				
 			}
 		});
 		filePane.add(goButton, 0, 3);
 
 		//add the user input to this
 		this.getChildren().add(filePane);
-
 	}
 
 	public File getDataFile() {

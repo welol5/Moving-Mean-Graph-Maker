@@ -161,7 +161,13 @@ public class DistributedMovingMeanGraphWorkerServer {
 
 	public static void setGraphPos(int x, int y) {
 		synchronized(graph) {
+			try {
 			graph[x][y] = true;
+			} catch (ArrayIndexOutOfBoundsException e) {
+				System.out.println(x);
+				System.out.println(y);
+				e.printStackTrace();
+			}
 		}
 	}
 }

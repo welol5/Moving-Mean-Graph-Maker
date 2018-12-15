@@ -19,6 +19,7 @@ public class ClientConnectionThread implements Runnable {
 	private int[] yMap;
 	private int height;
 	private double maxYVal;
+	private boolean[][] graphSegment = null;
 	
 	public ClientConnectionThread(Socket connection, int jobNumber, double[] valuesToSend, int[] yMap, int range, int height, double MaxYVal){
 		socket = connection;
@@ -70,7 +71,6 @@ public class ClientConnectionThread implements Runnable {
 		}
 		
 		//receive results
-		boolean[][] graphSegment = null;
 		try {
 			graphSegment = (boolean[][]) in.readObject();
 		} catch (ClassNotFoundException e) {
@@ -85,14 +85,19 @@ public class ClientConnectionThread implements Runnable {
 		if(graphSegment == null) {
 			System.out.println("Segment not received");
 		} else {
-			for(int x = 0; x < graphSegment.length; x++) {
-				System.out.print("[");
-				for(int y = 0; y < graphSegment[x].length; y++){
-					System.out.print(" " + graphSegment[x][y]);
-				}
-				System.out.println("]");
-			}
+//			for(int x = 0; x < graphSegment.length; x++) {
+//				System.out.print("[");
+//				for(int y = 0; y < graphSegment[x].length; y++){
+//					System.out.print(" " + graphSegment[x][y]);
+//				}
+//				System.out.println("]");
+//			}
+			System.out.println("Received");
 		}
+	}
+	
+	public boolean[][] getGraphSeg(){
+		return graphSegment;
 	}
 
 }

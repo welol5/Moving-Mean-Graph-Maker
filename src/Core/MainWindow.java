@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -44,8 +45,6 @@ public class MainWindow extends Application{
 			"Test"
 	};
 	
-	private File dataFile; //the data file that will have a function run on it
-	private GridPane details = new GridPane(); //this will hold data that is discovered about the file
 	private Dimension graphSize;
 	
 	//GraphManager manager = new GraphManager();
@@ -61,19 +60,18 @@ public class MainWindow extends Application{
 		screen = Toolkit.getDefaultToolkit().getScreenSize();
 		BorderPane root = new BorderPane();
 		
-		//make a colorful canvas for testing
+		//set the center pane
 		graphSize = new Dimension((int)screen.getWidth()/2,(int)screen.getHeight()/2);
-		Canvas canvas = new Canvas(graphSize.getWidth(),graphSize.getHeight());
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		//set the background color
-		canvas.getStyleClass().add("graphPanel");
+		GraphPanel graph = new GraphPanel();
+		graph.setPrefSize(graphSize.getWidth(), graphSize.getHeight());
+		
 		
 		//add canvas to the root panel
-		root.setCenter(canvas);
+		root.setCenter(graph);
 		
 		//add the info pane to the root
 		//System.out.println(screen.getHeight());
-		InfoPanel info = new InfoPanel(primaryStage, screen.getHeight()/2, graphSize);
+		InfoPanel info = new InfoPanel(primaryStage, screen.getHeight()/2, graphSize, graph);
 		root.setRight(info);
 		
 		//add the root pane to the application

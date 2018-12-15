@@ -9,22 +9,23 @@ import java.util.Random;
 import com.sun.corba.se.impl.orbutil.graph.Graph;
 
 import Core.GraphStyle;
+import javafx.scene.paint.Color;
 
 public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
-	
+
 	private String[] connections;
 	private Socket[] workers;
 	private int range;
 
-	public DistributedMovingMeanGraphSupervisor(File file, String regex, int xCol, int yCol, int range, Dimension s, String[] workerAddresses) throws IllegalArgumentException {
-		super(file, regex, xCol, yCol, s);
+	public DistributedMovingMeanGraphSupervisor(File file, String regex, int xCol, int yCol, Color c, int range, Dimension s, String[] workerAddresses) throws IllegalArgumentException {
+		super(file, regex, xCol, yCol, s, c);
 		connections = workerAddresses;
 		this.range = range;
 	}
-	
+
 	@Override
 	public void run() {
-		
+
 		//make the connections
 		workers = new Socket[connections.length];
 		for(int i = 0; i < connections.length; i++) {
@@ -36,15 +37,15 @@ public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
 				return;
 			}
 		}
-		
+
 		//calculate the values that the y values will be mapped to
 		int[] yMap = new int[getxValues().length];
 		for(int i = 0; i < yMap.length; i++) {
 			yMap[i] = i/getSize().width;
 		}
-		
+
 		//make connections to handle data
-		System.out.println("Make connections");
+		//System.out.println("Make connections");
 		Thread[] handlerThreads = new Thread[workers.length];
 		ClientConnectionThread[] handlers = new ClientConnectionThread[workers.length];
 		for(int i = 0; i < workers.length; i++) {
@@ -54,7 +55,35 @@ public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
 			handlers[i] = new ClientConnectionThread(workers[i],i,arrayToSend,yMapToSend, range, getSize().height, getMaxYVal());
 			handlerThreads[i] = new Thread(handlers[i]);
 			handlerThreads[i].start();
-			
+
 		}
+
+		//wait for the data to be received
+		for(int i = 0; i < workers.length; i++) {
+			try {
+				handlerThreads[i].join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		//threads are done
+		//data is received
+		//stitch data together
+		//TODO
+		System.out.println("Stitch");
+		for(int i = 0; i < workers.length; i++) {
+			//go through workers
+			for(int x = 0; x < handlers[i].getGraphSeg().length; x++) {
+				//go through x values
+				for(int y = 0; y < handlers[i].getGraphSeg()[x].length; y++) {
+					//set points
+					if(handlers[i].getGraphSeg()[x][y]) {
+						setGraphPoint(x, y);
+					}
+				}
+			}
+		}
+		done = true;
 	}
 }
