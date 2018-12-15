@@ -115,8 +115,8 @@ public class DistributedMovingMeanGraphWorkerServer {
 						high = allYValues.length;
 					}
 					//debug
-					System.out.println("Low: " + low);
-					System.out.println("High: " + high);
+//					System.out.println("Low: " + low);
+//					System.out.println("High: " + high);
 					
 					//get the subsets
 					double[] yValues = Arrays.copyOfRange(allYValues,low, high);

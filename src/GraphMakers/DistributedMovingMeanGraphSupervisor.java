@@ -31,7 +31,7 @@ public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
 		for(int i = 0; i < connections.length; i++) {
 			try {
 				workers[i] = new Socket(connections[i].split(":")[0], Integer.parseInt(connections[i].split(":")[1]));
-			} catch (NumberFormatException | IOException e) {
+			} catch (NumberFormatException | IOException | ArrayIndexOutOfBoundsException e) {
 				System.out.println("Error occured. Aborting operation.");
 				e.printStackTrace();
 				return;
@@ -41,7 +41,7 @@ public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
 		//calculate the values that the y values will be mapped to
 		int[] yMap = new int[getxValues().length];
 		for(int i = 0; i < yMap.length; i++) {
-			yMap[i] = i/getSize().width;
+			yMap[i] = (int)(map(getxValues()[i],getxValues()[getxValues().length-1], 0, getSize().width-1, 0));
 		}
 
 		//make connections to handle data
@@ -88,5 +88,9 @@ public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
 			}
 		}
 		done = true;
+	}
+	
+	private double map(double value, double oldHigh, double oldLow, double newHigh, double newLow) {
+		return (((value-oldLow)/(oldHigh-oldLow))*(newHigh-newLow))+newLow;
 	}
 }

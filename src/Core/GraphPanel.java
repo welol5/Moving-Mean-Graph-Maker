@@ -35,8 +35,8 @@ public class GraphPanel extends BorderPane {
 	public void paintGraph(Color[][] graph) {
 		
 		//debug
-		System.out.println("x: " + this.getWidth());
-		System.out.println("y: " + this.getHeight());
+//		System.out.println("x: " + this.getWidth());
+//		System.out.println("y: " + this.getHeight());
 		
 		canvas.setHeight(this.getPrefHeight());
 		canvas.setWidth(this.getPrefWidth());
