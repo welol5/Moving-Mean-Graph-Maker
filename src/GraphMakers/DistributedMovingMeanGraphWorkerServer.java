@@ -112,7 +112,7 @@ public class DistributedMovingMeanGraphWorkerServer {
 					int high = ((i+1)*(allYValues.length/THREADS))+range;
 					//prevent out of bounds
 					if(high > allYValues.length) {
-						high = allYValues.length;
+						high = allYValues.length-1;
 					}
 					//debug
 //					System.out.println("Low: " + low);
@@ -123,7 +123,7 @@ public class DistributedMovingMeanGraphWorkerServer {
 					int[] xValues = Arrays.copyOfRange(allXValues,low, high);
 					
 					//give the workers the subsets
-					workers[i] = new DistributedMovingMeanGraphWorker(xValues, yValues, height, maxYVal);
+					workers[i] = new DistributedMovingMeanGraphWorker(xValues, yValues, height, maxYVal, range);
 					workerThreads[i] = new Thread(workers[i]);
 					workerThreads[i].start();
 				}

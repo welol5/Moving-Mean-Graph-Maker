@@ -6,23 +6,39 @@ public class DistributedMovingMeanGraphWorker implements Runnable {
 	private int[] xValues;
 	private double maxYVal;
 	private int height;
+	private int range;
 	
-	public DistributedMovingMeanGraphWorker(int[] xValues, double[] yValues, int height, double maxYVal) {
+	public DistributedMovingMeanGraphWorker(int[] xValues, double[] yValues, int height, double maxYVal, int range) {
 		this.xValues = xValues;
 		this.yValues = yValues;
 		this.maxYVal= maxYVal;
 		this.height = height;
+		this.range = range;
 	}
 
 	@Override
 	public void run() {
 		
+		//calculate differences in time
+		double[] deltaY = new double[yValues.length];
+		//calculate the largest difference
+		double maxTimeDiff = -1;
+		for(int i = 0; i < deltaY.length-range; i++) {
+			double avgOverRange = 0;
+			for(int k = 0; k < range; k++) {
+				avgOverRange += yValues[i+k+1]-yValues[i+k];
+			}
+			avgOverRange /= range;
+			if(avgOverRange > maxTimeDiff)maxTimeDiff = avgOverRange;
+			deltaY[i] = avgOverRange;
+		}
+		
 		for(int i = 0; i < xValues.length; i++) {
-			int y = (int)map(yValues[i], maxYVal, 0, height, 0);
-			//System.out.println("(" + xValues[i] + "," + yValues[i] + "):(" + xValues[i] + "," + y + ")");
-//			System.out.println("Max: " + maxYVal);
-//			System.out.println("(" + yValues[i] + "," + y + ")");
-//			System.out.println("x: " + xValues[i]);
+			
+			//map the values to the graph
+			int y = (int)map(deltaY[i], maxTimeDiff, 0, height, 0);
+			System.out.println("(" + xValues[i] + "," + deltaY[i] + "):(" + xValues[i] + "," + y + ")");
+			
 			DistributedMovingMeanGraphWorkerServer.setGraphPos(xValues[i], y);
 		}
 		

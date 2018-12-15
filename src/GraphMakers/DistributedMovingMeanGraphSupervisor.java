@@ -41,7 +41,7 @@ public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
 		//calculate the values that the y values will be mapped to
 		int[] yMap = new int[getxValues().length];
 		for(int i = 0; i < yMap.length; i++) {
-			yMap[i] = (int)(map(getxValues()[i],getxValues()[getxValues().length-1], 0, getSize().width-1, 0));
+			yMap[i] = (int)(map(getxValues()[i],getxValues()[getxValues().length-1], 0, getSize().width, 0));
 		}
 
 		//make connections to handle data

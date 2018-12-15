@@ -50,6 +50,9 @@ public class InfoPanel extends VBox {
 		//add details to this
 		getChildren().add(details);
 
+		//keep go button at the bottom by setting the y value to yPos
+		int yPos = 0;
+
 		//File IO and other user input
 		GridPane filePane = new GridPane();
 		filePane.setPrefHeight(this.getPrefHeight()/2);
@@ -58,31 +61,8 @@ public class InfoPanel extends VBox {
 		filePane.setVgap(prefHeight/100);
 		//filePane.setPadding();
 
-		//add select file button
-		Button selectFileButton = new Button("Select File");
-		selectFileButton.getStyleClass().add("basicFont");
-		//selectFileButton.setAlignment(Pos.CENTER);
-		selectFileButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				FileChooser fileChooser = new FileChooser();
-				fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-				dataFile = fileChooser.showOpenDialog(stage);
-				if(dataFile != null) {
-					fileTitle.setText(dataFile.getName());
-				}
-			}
-		});
-		filePane.add(selectFileButton,0,2);
-
-		//add distributed computer select
+		//this is needed later
 		Button workerSelector = new Button("Edit Worker List");
-		workerSelector.getStyleClass().add("basicFont");
-		workerSelector.setOnAction(e -> {
-			selector.display();
-			workerData = selector.getData();
-		});
-		filePane.add(workerSelector, 0, 1);
 
 		//add GraphStyle select
 		styleSelect = new ComboBox<String>();
@@ -102,31 +82,61 @@ public class InfoPanel extends VBox {
 				}
 			}
 		});
-		filePane.add(styleSelect,0,0);
-		
+		filePane.add(styleSelect,0,yPos);
+		yPos++;
+
+		//add distributed computer select
+		workerSelector.getStyleClass().add("basicFont");
+		workerSelector.setOnAction(e -> {
+			selector.display();
+			workerData = selector.getData();
+		});
+		filePane.add(workerSelector, 0, yPos);
+		yPos++;
+		workerSelector.setDisable(true);
+
+		//add select file button
+		Button selectFileButton = new Button("Select File");
+		selectFileButton.getStyleClass().add("basicFont");
+		//selectFileButton.setAlignment(Pos.CENTER);
+		selectFileButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+				dataFile = fileChooser.showOpenDialog(stage);
+				if(dataFile != null) {
+					fileTitle.setText(dataFile.getName());
+				}
+			}
+		});
+		filePane.add(selectFileButton,0,yPos);
+		yPos++;
+
 		Button goButton = new Button("Go");
 		goButton.getStyleClass().add("basicFont");
 		goButton.setOnAction(e -> {
 			String graphType = styleSelect.getValue();
 			GraphStyle graph;
-			
+
 			//make the correct type of graph
 			if(graphType.equalsIgnoreCase("Distributed Moving Mean")) {
 				//System.out.println("Make Graph");
-				graph = new DistributedMovingMeanGraphSupervisor(dataFile, " ", 0,1, Color.BLUEVIOLET, /*TODO range*/10,graphDimension, workerData);
+				graph = new DistributedMovingMeanGraphSupervisor(dataFile, " ", 0,1, Color.BLUEVIOLET, /*TODO range*/20,graphDimension, workerData);
 				graphThread = new Thread(graph);
 				graphThread.start();
-				
+
 				panel.setLoadingScreen();
 				//wait for the data
 				//use a loop so that the program does not hang
 				while(!graph.isDone()) {}
-				
+
 				panel.paintGraph(graph.getGraph());
-				
+
 			}
 		});
-		filePane.add(goButton, 0, 3);
+		filePane.add(goButton, 0, yPos);
+		yPos++;
 
 		//add the user input to this
 		this.getChildren().add(filePane);
