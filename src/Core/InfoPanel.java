@@ -11,8 +11,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -84,6 +87,33 @@ public class InfoPanel extends VBox {
 		});
 		filePane.add(styleSelect,0,yPos);
 		yPos++;
+		
+		//add range select
+		HBox rangeSelect = new HBox();
+		//Instructions
+		Text rangeText = new Text("Range: ");
+		rangeText.getStyleClass().add("basicFont");
+		rangeSelect.getChildren().add(rangeText);
+		//value area
+		TextField rangeField = new TextField();
+		rangeField.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				//change the value only if its an int
+				if(!newValue.isEmpty()) {
+					try {
+						//try to parse as int
+						Integer.parseInt(newValue);
+					} catch (NumberFormatException e){
+						rangeField.setText(oldValue);
+					}
+				}
+			}
+		});
+		rangeSelect.getChildren().add(rangeField);
+		filePane.add(rangeSelect, 0, yPos);
+		yPos++;
+		
 
 		//add distributed computer select
 		workerSelector.getStyleClass().add("basicFont");
@@ -112,6 +142,11 @@ public class InfoPanel extends VBox {
 		});
 		filePane.add(selectFileButton,0,yPos);
 		yPos++;
+		
+		//add color picking
+		final ColorPicker picker = new ColorPicker();
+		filePane.add(picker, 0, yPos);
+		yPos++;
 
 		Button goButton = new Button("Go");
 		goButton.getStyleClass().add("basicFont");
@@ -122,7 +157,7 @@ public class InfoPanel extends VBox {
 			//make the correct type of graph
 			if(graphType.equalsIgnoreCase("Distributed Moving Mean")) {
 				//System.out.println("Make Graph");
-				graph = new DistributedMovingMeanGraphSupervisor(dataFile, " ", 0,1, Color.BLUEVIOLET, /*TODO range*/20,graphDimension, workerData);
+				graph = new DistributedMovingMeanGraphSupervisor(dataFile, " ", 0,1, picker.getValue(), Integer.parseInt(rangeField.getText()),graphDimension, workerData);
 				graphThread = new Thread(graph);
 				graphThread.start();
 
