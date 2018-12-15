@@ -14,10 +14,11 @@ import javafx.stage.Stage;
 public class WorkerSelector {
 	
 	WorkerData data;
+	Stage window;
 	
-	public void display() {
+	public WorkerSelector() {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		Stage window = new Stage();
+		window = new Stage();
 		window.setResizable(false);
 		
 		//window is a separate window to be used for getting data
@@ -58,6 +59,9 @@ public class WorkerSelector {
 		
 		Scene scene = new Scene(root);
 		window.setScene(scene);
+	}
+	
+	public void display() {
 		window.showAndWait();
 	}
 	

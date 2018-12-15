@@ -13,7 +13,7 @@ public class DistributedMovingMeanGraphWorkerServer {
 	public static final int DEFAULT_PORT = 40998;
 	private static volatile boolean shutdown = false;
 	
-	public static final int THREADS = 4;
+	public static final int THREADS = 1;
 	private static boolean[][] graph;
 
 	public static void main(String[] args) {
@@ -68,7 +68,7 @@ public class DistributedMovingMeanGraphWorkerServer {
 					e.printStackTrace();
 				}
 				
-				System.out.println("Connection made");
+				//System.out.println("Connection made");
 				
 				//objects are ready to send and receive
 				//get the arrays of values
@@ -81,13 +81,14 @@ public class DistributedMovingMeanGraphWorkerServer {
 					allYValues = (double[]) in.readObject();
 					//x values correspond to what column of pixels the y values map to
 					allXValues = (int[]) in.readObject();
-					System.out.println("Read arrays");
+					//System.out.println("Read arrays");
+					System.out.println("Max x value: " + allXValues[allXValues.length-1]);
 					range = in.readInt();
-					System.out.println("Read range");
+					//System.out.println("Read range");
 					height = in.readInt();
-					System.out.println("Read height");
+					//System.out.println("Read height");
 					maxYVal = in.readDouble();
-					System.out.println("Read all values");
+					//System.out.println("Read all values");
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -98,6 +99,8 @@ public class DistributedMovingMeanGraphWorkerServer {
 				
 				//setup graph segment
 				graph = new boolean[allXValues[allXValues.length-1]][height];
+				System.out.println("x: " + allXValues[allXValues.length-1]);
+				System.out.println("y: " + height);
 				
 				System.out.println("Values received");
 				System.out.println("# of values: " + allYValues.length);
@@ -164,8 +167,8 @@ public class DistributedMovingMeanGraphWorkerServer {
 			try {
 			graph[x][y] = true;
 			} catch (ArrayIndexOutOfBoundsException e) {
-				System.out.println(x);
-				System.out.println(y);
+//				System.out.println(x);
+//				System.out.println(y);
 				e.printStackTrace();
 			}
 		}

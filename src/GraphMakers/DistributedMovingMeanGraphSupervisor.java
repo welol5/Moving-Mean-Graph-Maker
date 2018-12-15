@@ -50,8 +50,11 @@ public class DistributedMovingMeanGraphSupervisor extends GraphStyle{
 		ClientConnectionThread[] handlers = new ClientConnectionThread[workers.length];
 		for(int i = 0; i < workers.length; i++) {
 			//System.out.println((i*(getyValues().length/workers.length)) + " : " + ((i+1)*(getyValues().length/workers.length)-1));
-			double[] arrayToSend = Arrays.copyOfRange(getyValues(), i*(getyValues().length/workers.length), (i+1)*(getyValues().length/workers.length)-1);
+			double[] arrayToSend = Arrays.copyOfRange(getyValues(), i*(getyValues().length/workers.length), (i+1)*(getyValues().length/workers.length));
 			int[] yMapToSend = Arrays.copyOfRange(yMap, i*(yMap.length/workers.length), (i+1)*(yMap.length/workers.length));
+			
+			System.out.println("Arrays.copyOfRange (high,low) : (" + yMapToSend[yMapToSend.length-1]+ "," + yMapToSend[0] + ") " + yMap[yMap.length-1]);
+			
 			handlers[i] = new ClientConnectionThread(workers[i],i,arrayToSend,yMapToSend, range, getSize().height, getMaxYVal());
 			handlerThreads[i] = new Thread(handlers[i]);
 			handlerThreads[i].start();
