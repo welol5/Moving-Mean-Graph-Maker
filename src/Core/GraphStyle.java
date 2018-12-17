@@ -21,6 +21,8 @@ public abstract class GraphStyle implements Runnable{
 
 	private double[] xValues;
 	private double[] yValues;
+	private double maxXVal = 0;
+	
 	private double maxYVal = 0;
 
 	private Dimension size;
@@ -59,11 +61,15 @@ public abstract class GraphStyle implements Runnable{
 		xValues = new double[xStrings.size()];
 		yValues = new double[yStrings.size()];
 		for(int i = 0; i < xValues.length && i < yValues.length; i++) {
-			xValues[i] = Double.parseDouble(xStrings.get(i));
+			double xVal = Double.parseDouble(xStrings.get(i));
+			xValues[i] = xVal;
 			double yVal = Double.parseDouble(yStrings.get(i));
 			yValues[i] = yVal;
 			if(yVal > maxYVal) {
 				maxYVal = yVal;
+			}
+			if(xVal > maxXVal) {
+				maxXVal = xVal;
 			}
 			
 		}
@@ -101,6 +107,10 @@ public abstract class GraphStyle implements Runnable{
 		return yValues;
 	}
 	
+	protected double getMaxXVal() {
+		return maxXVal;
+	}
+
 	protected double getMaxYVal() {
 		return maxYVal;
 	}

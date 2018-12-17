@@ -166,7 +166,7 @@ public class InfoPanel extends VBox {
 				//use a loop so that the program does not hang
 				while(!graph.isDone()) {}
 
-				panel.paintGraph(graph.getGraph());
+				panel.paintGraph(graph.getGraph(), graph.getMaxYVal(), graph.getMaxXVal());
 
 			}
 		});
