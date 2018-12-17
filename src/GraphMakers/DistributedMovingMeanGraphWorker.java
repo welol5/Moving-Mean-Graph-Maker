@@ -33,11 +33,16 @@ public class DistributedMovingMeanGraphWorker implements Runnable {
 			deltaY[i] = avgOverRange;
 		}
 		
+		System.out.println("height: " + height + " :MaxTimeDiff: " + maxTimeDiff);
+		
 		for(int i = 0; i < xValues.length; i++) {
 			
 			//map the values to the graph
-			int y = (int)map(deltaY[i], maxTimeDiff, 0, height, 0);
-			System.out.println("(" + xValues[i] + "," + deltaY[i] + "):(" + xValues[i] + "," + y + ")");
+			int y = (int)map(deltaY[i], maxTimeDiff, 0, height-1, 0);
+			//System.out.println("(" + xValues[i] + "," + deltaY[i] + "):(" + xValues[i] + "," + y + ")");
+			if(y > 500) {
+				System.out.println("(" + xValues[i] + "," + y + ") : ("  + xValues[i] + "," + deltaY[i] + ")");
+			}
 			
 			DistributedMovingMeanGraphWorkerServer.setGraphPos(xValues[i], y);
 		}

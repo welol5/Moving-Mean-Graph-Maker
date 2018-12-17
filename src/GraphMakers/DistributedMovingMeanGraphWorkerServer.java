@@ -13,7 +13,7 @@ public class DistributedMovingMeanGraphWorkerServer {
 	public static final int DEFAULT_PORT = 40998;
 	private static volatile boolean shutdown = false;
 	
-	public static final int THREADS = 1;
+	public static final int THREADS = 4;
 	private static boolean[][] graph;
 
 	public static void main(String[] args) {
@@ -167,8 +167,8 @@ public class DistributedMovingMeanGraphWorkerServer {
 			try {
 			graph[x][y] = true;
 			} catch (ArrayIndexOutOfBoundsException e) {
-//				System.out.println(x);
-//				System.out.println(y);
+				System.out.println(x);
+				System.out.println(y);
 				e.printStackTrace();
 			}
 		}
